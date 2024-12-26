@@ -11,6 +11,10 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        heroBlue:'#030324',
+        headerBackground:"rgba(3,3,36,0.2)",
+        cardBackground:"rgba(225,225,225,0.2)",
+        90:"90%",
       },
     },
   },
