@@ -54,6 +54,7 @@ export default function page() {
     //validation on email
     if( email === "" ||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){   
       setEmailError("Invalid email address")
+      return
     }else{
       setEmailError("")
     }
@@ -61,14 +62,20 @@ export default function page() {
     //validation on password
     if( password !== "" && password.length < 8){    //validation for minimum length
       setPasswordError("Password should be at least 8 characters long")
+      return
     }else if(password.length > 7 && !password.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}()@_|\\":<>\?]/)){   //validation for special characters
       setPasswordError("password at least contain one special character")
+      return
     }else{
       setPasswordError("")
     }
     //validation on conform password 
-    if( conformPassword!== "" && conformPassword!== password){   //validation for matching password
+    if(conformPassword=== ""){
+      setConfirmPasswordError("Confirm Password is required")
+      return
+    }else if( conformPassword!== "" && conformPassword!== password){   //validation for matching password
       setConfirmPasswordError("Passwords do not match")
+      return
     }else{
       setConfirmPasswordError("")
     }
@@ -86,7 +93,14 @@ export default function page() {
     
     
     console.log("signing in...")
-    router.push('/login')
+    setUsername("********************************")
+    setEmail("********************************")
+    setPassword("********************************")
+    setConformPassword("********************************")
+    setTimeout(() => {
+      setUsernameError("")    //this is not working properly
+      router.push('/login')
+    }, 10)
   }
   
 
