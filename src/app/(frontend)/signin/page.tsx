@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function page() {
   const [username,setUsername] = useState("")
@@ -10,6 +11,7 @@ export default function page() {
   const [emailError,setEmailError] = useState("")
   const [passwordError,setPasswordError] = useState("")
   const [confirmPasswordError,setConfirmPasswordError] = useState("")
+  const router = useRouter()
 
   //validation on username
   useEffect(() => {
@@ -25,28 +27,8 @@ export default function page() {
     }
   },[username])
 
-  //validation on password
-  useEffect(() => {
-    if( password !== "" && password.length < 8){    //validation for minimum length
-      setPasswordError("Password should be at least 8 characters long")
-    }else if(password.length > 7 && !password.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}()@_|\\":<>\?]/)){   //validation for special characters
-      setPasswordError("password at least contain one special character")
-    }else{
-      setPasswordError("")
-    }
-  },[password])
 
-  //validation on confirm password
-  useEffect(() => {
-    if( conformPassword!== "" && conformPassword!== password){   //validation for matching password
-      setConfirmPasswordError("Passwords do not match")
-    }else{
-      setConfirmPasswordError("")
-    }
-  },[conformPassword,password])
-
- 
-
+  //checking is any field empty or not
   const validation = () => {
     let valid = true
     if(conformPassword === "" ){
@@ -76,6 +58,21 @@ export default function page() {
       setEmailError("")
     }
 
+    //validation on password
+    if( password !== "" && password.length < 8){    //validation for minimum length
+      setPasswordError("Password should be at least 8 characters long")
+    }else if(password.length > 7 && !password.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}()@_|\\":<>\?]/)){   //validation for special characters
+      setPasswordError("password at least contain one special character")
+    }else{
+      setPasswordError("")
+    }
+    //validation on conform password 
+    if( conformPassword!== "" && conformPassword!== password){   //validation for matching password
+      setConfirmPasswordError("Passwords do not match")
+    }else{
+      setConfirmPasswordError("")
+    }
+
     //validation on states
     if(emailError!== "" || passwordError!== "" || usernameError!== "" || confirmPasswordError!== "" ){
       return
@@ -89,6 +86,7 @@ export default function page() {
     
     
     console.log("signing in...")
+    router.push('/login')
   }
   
 
@@ -106,6 +104,7 @@ export default function page() {
                 <input 
                 value={username}
                 onChange={(e)=>setUsername(e.target.value)}
+                onFocus={()=>setUsernameError("")}
                 type="text"
                 placeholder='USERNAME'  
                 className='w-[100%] rounded-md font-normal text-sm pl-1 focus:outline-none text-heroBlue py-1'/>
@@ -126,7 +125,8 @@ export default function page() {
                 <p className='font-normal text-sm opacity-65'>PASSWORD</p>
                 <input
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)} 
+                onChange={(e)=>setPassword(e.target.value)}
+                onFocus={()=>setPasswordError("")} 
                 type="password"
                 placeholder='PASSWORD'  
                 className='w-[100%] rounded-md font-normal text-sm pl-1 focus:outline-none text-heroBlue py-1'/>
