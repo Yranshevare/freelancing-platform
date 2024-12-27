@@ -14,6 +14,7 @@ export default function page() {
   const [emailError,setEmailError] = useState("")
   const [passwordError,setPasswordError] = useState("")
   const [confirmPasswordError,setConfirmPasswordError] = useState("")
+  const [submitError,setSubmitError] = useState("")
   const router = useRouter()
 
   //validation on username
@@ -97,13 +98,6 @@ export default function page() {
     
     
     console.log("signing in...")
-    setUsername("********************************")
-    setEmail("********************************")
-    setPassword("********************************")
-    setConformPassword("********************************")
-    setTimeout(() => {
-      setUsernameError("")    
-    }, 10)
 
 
    //api call to save the user
@@ -123,13 +117,17 @@ export default function page() {
       if(response.data.status === 200){
         router.push('/login')
       }else{
-        setUsername("")
-        setPassword("")
-        setConformPassword("")
-        setEmail("")
+
+        if(response.data.error === "Username already exists"){
+          setUsernameError(`@${username} user already exists`)
+        }
+        if(response.data.error === "email already exists"){
+          setEmailError(`${email} email is already exists`)
+        }
       }
     }else{
-      console.error("Failed to sign in")
+      // console.error("Failed to sign in")
+      setSubmitError("something went wrong please try again") 
     }
 
   }
@@ -191,6 +189,7 @@ export default function page() {
                 <button 
                 onClick={submit}
                 className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] '>sign in</button>
+                <p className='text-xs text-red-700 font-normal h-2 text-center pt-2'>{submitError}</p>
               </div>
             </div>
           </div>
