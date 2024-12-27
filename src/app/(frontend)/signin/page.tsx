@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+ 
+
+
 export default function page() {
   const [username,setUsername] = useState("")
   const [password,setPassword] = useState("")
@@ -32,7 +35,7 @@ export default function page() {
   const validation = () => {
     let valid = true
     if(conformPassword === "" ){
-      setConfirmPasswordError("")
+      setConfirmPasswordError("confirmPassword is required")
       valid = false
     }
     if(password === "" ){
@@ -51,6 +54,11 @@ export default function page() {
   }
 
   const submit = async() => {
+
+    if(!validation()){
+      return
+    }
+    
     //validation on email
     if( email === "" ||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){   
       setEmailError("Invalid email address")
@@ -69,6 +77,8 @@ export default function page() {
     }else{
       setPasswordError("")
     }
+
+
     //validation on conform password 
     if(conformPassword=== ""){
       setConfirmPasswordError("Confirm Password is required")
@@ -84,9 +94,7 @@ export default function page() {
     if(emailError!== "" || passwordError!== "" || usernameError!== "" || confirmPasswordError!== "" ){
       return
     }
-    if(!validation()){
-      return
-    }
+    
     
    
     
@@ -98,7 +106,7 @@ export default function page() {
     setPassword("********************************")
     setConformPassword("********************************")
     setTimeout(() => {
-      setUsernameError("")    //this is not working properly
+      setUsernameError("")    
       router.push('/login')
     }, 10)
   }
@@ -150,6 +158,7 @@ export default function page() {
                 <input 
                 value={conformPassword}
                 onChange={(e)=>setConformPassword(e.target.value)}
+                onFocus={()=>setConfirmPasswordError("")} 
                 type="password"
                 placeholder='CONFORM PASSWORD'  
                 className='w-[100%] rounded-md font-normal text-sm pl-1 focus:outline-none text-heroBlue py-1'/>
