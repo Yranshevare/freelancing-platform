@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import axios from 'axios'
  
 
 
@@ -96,10 +96,6 @@ export default function page() {
     }
     
     
-   
-    
-    
-    
     console.log("signing in...")
     setUsername("********************************")
     setEmail("********************************")
@@ -107,8 +103,35 @@ export default function page() {
     setConformPassword("********************************")
     setTimeout(() => {
       setUsernameError("")    
-      router.push('/login')
     }, 10)
+
+
+   //api call to save the user
+    const response = await axios.post('/api/user/signin', {
+      username: username,
+      email: email,
+      password: password
+    })
+    // .then(()=>router.push('/login'))
+    // .catch(()=>console.log("Failed to sign in"))
+    
+    
+    
+    
+    if(response){
+      console.log(response)
+      if(response.data.status === 200){
+        router.push('/login')
+      }else{
+        setUsername("")
+        setPassword("")
+        setConformPassword("")
+        setEmail("")
+      }
+    }else{
+      console.error("Failed to sign in")
+    }
+
   }
   
 
