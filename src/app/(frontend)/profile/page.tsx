@@ -1,6 +1,7 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '@/components/header'
+import ProfileForm from '@/components/profileForm'
 
 export default function page() {
 
@@ -10,11 +11,35 @@ export default function page() {
     const [linkTwo,setLinkTwo] = useState("linksTwo")
     // const [image,setImage] = useState("/loading_page_img.jpg") //url of img
     const [image,setImage] = useState("")
+    const [butClick,setButClick] = useState(0)
+    const [opacity,setOpacity] = useState("flex")
+    const [display,setDisplay] = useState("hidden")
+
+    const cancelBut = () => {
+      setDisplay("hidden")
+      setOpacity("flex")
+      setButClick(0)
+    }
+    
+    const openEditProfile = () => {
+      setDisplay("flex")
+      setOpacity("hidden")
+      setButClick(1)
+    }
+   
   return (
     <>
-       <div className='flex flex-col items-center justify-center bg-heroBlue'>
+      <div className={`${display} w-full flex flex-col items-center bg-heroBlue justify-center pt-11`}>
+        <div className='w-full flex justify-end'>
+          <button 
+          onClick={cancelBut}
+          className='h-14 w-14 flex items-center justify-center mr-11 rounded-[50%] opacity-55 bg-red-500 text-white'>X</button>
+        </div>
+        <ProfileForm/>
+      </div>
+       <div className={` flex-col items-center absolute top-0 w-full justify-center bg-heroBlue ${opacity}`}>
             {/* div for hero section */}
-            <div className='w-full h-[70vh] '>
+            <div className= 'w-full h-[70vh]'>
                  <Header/>
                  <div className='w-full h-[500px] flex items-center justify-center  mt-16'>
                     <div className='w-1/2 flex flex-col  justify-around  pl-4'>
@@ -40,7 +65,9 @@ export default function page() {
                             }
                         </div>
                         <div>
-                            <button className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] w-full '>edit profile</button>
+                            <button 
+                            onClick={openEditProfile}
+                            className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] w-full '>edit profile</button>
                         </div>
 
                     </div>
@@ -69,7 +96,9 @@ export default function page() {
              <div className='w-full shadow-top bg-white text-black flex flex-col items-center'> 
                 <div className='flex justify-between w-[90%]'>
                     <h2 className='p-2 font-black text-2xl text-gray-600'>projects</h2>
-                    <button className='p-2'>Add project</button>
+                    <button 
+                    onClick={() => setButClick(2)}
+                    className='p-2'>Add project</button>
                 </div>
                 <div>
                     
