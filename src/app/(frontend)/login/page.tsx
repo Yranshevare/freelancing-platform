@@ -1,12 +1,54 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import axios from 'axios'
 
 export default function page() {
     const [id,setId] = useState("")
+    const [idError,setIdError] = useState("")
+    const [passwordError,setPasswordError] = useState("")
     const [password, setPassword] = useState("")
+    const [submitError,setSubmitError] = useState("")
     const submit = async() => {
-        console.log(id,password)
+
+        setIdError("")
+        setPasswordError("")
+        //validation on username
+        if(id === "" ){
+            setIdError("Please enter your username or email")
+            return
+        }
+
+        //validation on password
+        if(password === "" ){
+            setPasswordError("Please enter your password")
+            return
+        }
+
+       try {
+            const response = await axios.post('/api/user/login',{
+                id:id,
+                password:password
+            })
+            if(response.data.message === "user not found"){
+                setIdError("User not found")
+                return
+            }
+
+            if(response.data.message === "Invalid password"){
+                setPasswordError("Invalid password")
+                return
+            }
+
+            // console.log(response)
+       } catch (error:any) {
+            console.log(error.message)
+            setSubmitError("something went wrong please try again")
+            
+            return
+ 
+       }
+
     }
 
   return (
@@ -22,18 +64,22 @@ export default function page() {
                         <input 
                         value={id}
                         onChange={(e)=>setId(e.target.value)}
+                        onFocus={()=>setIdError("")}
                         placeholder='USERNAME / EMAIL'
                         type="text" 
                         className='rounded focus:outline-none w-[100%] text-heroBlue  font-medium text-xs py-1 pl-1'/>
+                        <p className='text-xs text-red-700 font-normal h-2 pt-2'>{idError}</p>
                     </div>
                     <div className='w-[100%]'>
                         <p className='font-normal text-xs opacity-65 mb-2'>PASSWORD</p>
                         <input 
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
+                        onFocus={()=>setPasswordError("")}
                         placeholder='PASSWORD'
                         type="password" 
                         className='rounded focus:outline-none w-[100%] text-heroBlue font-medium text-xs py-1 pl-1'/>
+                        <p className='text-xs text-red-700 font-normal h-2 pt-2'>{passwordError}</p>
                     </div>
                     <div className='flex flex-col'>
                         <button 
@@ -41,6 +87,7 @@ export default function page() {
                         onClick={submit}
                         >login</button>
                         <Link href="/signin" className='font-medium text-xs text-center mt-3 opacity-30 hover:opacity-80 duration-300'>create new account</Link>
+                        <p className='text-xs text-red-700 font-normal h-2 pt-2 text-center'>{submitError}</p>
                     </div>
                 </div>
             </div>

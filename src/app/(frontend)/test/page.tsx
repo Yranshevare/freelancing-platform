@@ -28,6 +28,7 @@ export default function Page() {
             
             // Setting the hashed password from the response
             setHashedPassword(response.data.hashedPassword)
+            console.log(response)
         } catch (error) {
             console.error("Error hashing password:", error)
         }

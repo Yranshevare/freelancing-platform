@@ -1,6 +1,6 @@
 import { mongoose } from "mongoose";
 import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 const userSchema = new mongoose.Schema({
     username:{
@@ -52,18 +52,18 @@ userSchema.methods.isPasswordCorrect = async function(password){ //password send
 //     }
 //     )
 // }
-// userSchema.methods.generateRefreshToken = function(){
-//     // console.log("refresh token called")
-//     return jwt.sign(
-//         {      //will create the refresh token
-//             _id:this._id,       //assign by mongodb
-//         },
-//         process.env.REFRESH_TOKEN_SECRETE,
-//         {
-//             expiresIn:process.env.REFRESH_TOKEN_EXPIRY
-//         }
-//     )
-// }
+userSchema.methods.generateRefreshToken = function(){
+    // console.log("refresh token called")
+    return jwt.sign(
+        {      //will create the refresh token
+            _id:this._id,       //assign by mongodb
+        },
+        process.env.REFRESH_TOKEN_SECRETE,
+        {
+            expiresIn:process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+}
 
 const User = mongoose.models.User || mongoose.model("User",userSchema)  
 
