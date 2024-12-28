@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function ProfileForm() {
     const [name,setName] = useState("")
@@ -25,15 +26,29 @@ export default function ProfileForm() {
             setNameError("All fields are required")
             setBioError("All fields are required")
             return false
+        }else{
+            return true
         }
     }
 
-    function submit(){
+    async function submit(){
         // console.log(name,bio,linkOne,linkTwo)
         if(!validations()){
             return
         }
 
+        // console.log("inside try of edit profile form")
+        try {
+            const response = await axios.post('/api/profile/save',{
+                name:name, 
+                bio:bio, 
+                linkOne:linkOne, 
+                linkTwo:linkTwo
+            })
+            console.log(response)
+        } catch (error) {
+            console.log(error.message)
+        }
 
     }
   return (

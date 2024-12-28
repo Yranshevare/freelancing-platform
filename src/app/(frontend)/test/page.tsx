@@ -20,10 +20,19 @@ import ProfileForm from '@/components/profileForm'
 
 export default function Page() {
     
-
+    async function getToken(){
+        try{
+            const response = await axios.get('/api/test')
+            console.log(response)
+        }catch(error){
+            console.error('Error:',error)
+        }
+    }
     return (
         <div className='flex items-center justify-center bg-heroBlue h-full'>
-            <ProfileForm />
+            <button
+            onClick={getToken}
+            >click</button>
         </div>
     )
 }
