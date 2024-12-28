@@ -16,29 +16,14 @@
 'use client'
 import React, { useState } from 'react'
 import axios from 'axios'
+import ProfileForm from '@/components/profileForm'
 
 export default function Page() {
-    const [password, setPassword] = useState("password")
-    const [hashedPassword, setHashedPassword] = useState("")
-
-    const hashPassword = async () => {
-        try {
-            // Sending the password to the server to hash it
-            const response = await axios.post('/api/test', { password })
-            
-            // Setting the hashed password from the response
-            setHashedPassword(response.data.hashedPassword)
-            console.log(response)
-        } catch (error) {
-            console.error("Error hashing password:", error)
-        }
-    }
+    
 
     return (
-        <div>
-            <p>Password: {password}</p>
-            <p>Hashed Password: {hashedPassword}</p>
-            <button onClick={hashPassword}>Hash Password</button>
+        <div className='flex items-center justify-center bg-heroBlue h-full'>
+            <ProfileForm />
         </div>
     )
 }

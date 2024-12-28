@@ -2,8 +2,11 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 export default function page() {
+    const router = useRouter()
+
     const [id,setId] = useState("")
     const [idError,setIdError] = useState("")
     const [passwordError,setPasswordError] = useState("")
@@ -38,6 +41,11 @@ export default function page() {
             if(response.data.message === "Invalid password"){
                 setPasswordError("Invalid password")
                 return
+            }
+
+            if(response.data.message === "login successful"){
+                console.log(response.data.message)
+                router.push('/profile')
             }
 
             // console.log(response)
