@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/header'
 import ProfileForm from '@/components/profileForm'
+import axios from 'axios'
 
 export default function page() {
 
@@ -15,12 +16,31 @@ export default function page() {
     const [opacity,setOpacity] = useState("flex")
     const [display,setDisplay] = useState("hidden")
 
+
+    const loadInfo = async() =>{
+      try {
+        const response = await axios.get('/api/profile/get')
+        if(response.data.message === "Profile not found"){
+            alert("Profile not found create new profile")
+            openEditProfile()
+        }
+        console.log(response)
+      } catch (error:any) {
+        console.log(error.message)
+      }
+    }
+
+    useEffect( () => {
+      loadInfo()
+    },[])
+
+
     const cancelBut = () => {
       setDisplay("hidden")
       setOpacity("flex")
       setButClick(0)
     }
-    
+    // const cancel = "cancel"
     const openEditProfile = () => {
       setDisplay("flex")
       setOpacity("hidden")
@@ -35,7 +55,7 @@ export default function page() {
           onClick={cancelBut}
           className='h-14 w-14 flex items-center justify-center mr-11 rounded-[50%] opacity-55 bg-red-500 text-white'>X</button>
         </div>
-        <ProfileForm/>
+        <ProfileForm cancel={cancelBut} />
       </div>
        <div className={` flex-col items-center absolute top-0 w-full justify-center bg-heroBlue ${opacity}`}>
             {/* div for hero section */}

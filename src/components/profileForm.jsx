@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function ProfileForm() {
+export default function ProfileForm({cancel}) {
     const [name,setName] = useState("")
     const [bio,setBio] = useState("")
     const [linkOne,setLinkOne] = useState("")
@@ -10,6 +10,8 @@ export default function ProfileForm() {
     const [bioCounterError,setBioCounterError] = useState("text-gray-400")
     const [nameError,setNameError] = useState("")
     const [bioError,setBioError] = useState("")
+    const [saveError,setSaveError] = useState("")
+
 
     useEffect(()=>{
         setBioCharCount(bio.length)
@@ -45,9 +47,14 @@ export default function ProfileForm() {
                 linkOne:linkOne, 
                 linkTwo:linkTwo
             })
-            console.log(response)
+            // console.log(response)
+            // console.log(cancel)
+            cancel();
+            
+
         } catch (error) {
-            console.log(error.message)
+            // console.log(error.message)
+            setSaveError("something went wrong please try again")
         }
 
     }
@@ -114,6 +121,7 @@ export default function ProfileForm() {
             <button 
             onClick={submit}
             className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] '>save</button>
+            <p className='w-full text-xs text-red-700 font-normal h-2 text-center pt-3'>{saveError}</p>
         </div>
     </div>
   )
