@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function ProfileForm({cancel}) {
-    const [name,setName] = useState("")
+function ProfileForm({cancel,user}) {
+    const [name,setName] = useState( "") 
     const [bio,setBio] = useState("")
     const [linkOne,setLinkOne] = useState("")
     const [linkTwo, setLinkTwo] = useState("")
@@ -11,6 +11,25 @@ export default function ProfileForm({cancel}) {
     const [nameError,setNameError] = useState("")
     const [bioError,setBioError] = useState("")
     const [saveError,setSaveError] = useState("")
+    // console.log(user)
+    // console.log('from profile edit form')
+
+    // This code runs on every render, and since it updates the state using setName, setBio, etc., it triggers a re-render, which again runs this code, causing the infinite loop.
+    // if (user) {
+    //     setName(user.name);
+    //     setBio(user.bio);
+    //     setLinkOne(user.links[0] || "");
+    //     setLinkTwo(user.links[1] || "");
+    // }
+    useEffect(() => {
+        if (user !== "create new user") {
+            setName(user.name || "");
+            setBio(user.bio || "");
+            setLinkOne(user.links[0] || "");
+            setLinkTwo(user.links[1] || "");
+        }
+    }, [user]);
+
 
 
     useEffect(()=>{
@@ -126,3 +145,6 @@ export default function ProfileForm({cancel}) {
     </div>
   )
 }
+
+
+export default ProfileForm

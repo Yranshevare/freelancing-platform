@@ -55,7 +55,7 @@ export async function GET (req:NextRequest){
     
         return NextResponse.json({
             message: "profile found successfully",
-            profile: userProfile
+            profile: userProfile[0]
         })
     } catch (error:any) {
         return NextResponse.json({
