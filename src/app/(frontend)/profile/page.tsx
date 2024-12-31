@@ -1,7 +1,7 @@
 "use client"
 import React, {  useEffect, useState } from 'react'
 import axios from 'axios'
-import ProfilePage from '@/components/profilePage'
+import ProfilePage from './profilePage'
 
 export default function page() {
 

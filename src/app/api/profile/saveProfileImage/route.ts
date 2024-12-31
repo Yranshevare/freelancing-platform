@@ -4,6 +4,7 @@ import Profile  from "@/models/profile.model.js"
 import { connectDb } from '@/db/index';
 import {getDataFromToken} from '@/helper/getUserIdFromToken'
 import {uploadOnCloudinary} from "@/helper/cloudinary.js"
+import {deleteCloudinaryImage} from '@/helper/deleteImgOnCloudinary';
 
 connectDb()
 
@@ -28,6 +29,7 @@ export async function POST (req : NextRequest){
             })
         }
 
+        
         const data = await req.formData();      //FormData object should be created before using it, which allows you to collect and submit form data, especially file uploads.
 
         const file: File | null = data.get('file') as unknown as File   //formData.get('file'), this returns either a File object (if a file is selected with the name 'file') or null if no file is found.
@@ -41,6 +43,16 @@ export async function POST (req : NextRequest){
         await writeFile(path,buffer)
         // console.log(upload)
 
+        if(profile.image){
+             try {
+                await deleteCloudinaryImage(profile.image);
+            } catch (error) {
+                
+                return NextResponse.json({
+                    message:'unable to delete the image'
+                })
+            }
+        }
         const response = await uploadOnCloudinary(path) 
 
         if(!response){
