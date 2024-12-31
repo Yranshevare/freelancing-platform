@@ -3,6 +3,8 @@ import { writeFile } from "fs/promises";
 import Profile  from "@/models/profile.model.js"
 import { connectDb } from '@/db/index';
 import {getDataFromToken} from '@/helper/getUserIdFromToken'
+import {uploadOnCloudinary} from "@/helper/cloudinary.js"
+
 connectDb()
 
 
@@ -39,9 +41,19 @@ export async function POST (req : NextRequest){
         await writeFile(path,buffer)
         // console.log(upload)
 
-        
+        const response = await uploadOnCloudinary(path) 
 
-        profile.image = path
+        if(!response){
+            return NextResponse.json({
+                message: "Error while uploading to cloudinary",
+                status: 500
+            })
+            
+        }
+
+        profile.image = response.url
+
+        
         await profile.save()
 
         return NextResponse.json({

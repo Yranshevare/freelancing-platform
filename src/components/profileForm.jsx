@@ -130,9 +130,9 @@ function ProfileForm({cancel,user}) {
                                     {/* <p className='font-normal text-sm opacity-65'>set profile image</p> */}
                                     {
                                         image.length>0?
-                                        <img className='w-full h-full rounded-md flex justify-center items-center' src={image} alt='Profile Pic'/>
+                                        <img className='w-full h-full overflow-hidden rounded-[50%] flex justify-center items-center' src={image} alt='Profile Pic'/>
                                         :
-                                        <div className='w-full h-full rounded-[50%] bg-[rgba(255,255,255,0.2)] '>
+                                        <div className='w-full h-full flex items-center justify-center rounded-[50%] bg-[rgba(255,255,255,0.2)] '>
                                             <p className='font-normal text-sm opacity-65'>set profile image</p>
                                         </div>
                                         

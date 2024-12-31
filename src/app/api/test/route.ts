@@ -1,10 +1,9 @@
 import bcrypt from "bcrypt";
 import { NextRequest,NextResponse } from 'next/server'
 import { getDataFromToken } from "@/helper/getUserIdFromToken";
-import upload from "@/helper/multer.js"
 import {join} from "path"
 import { writeFile } from "fs/promises";
-
+import {uploadOnCloudinary} from "@/helper/cloudinary.js"
 
 
 
@@ -25,24 +24,14 @@ export async function POST (req : NextRequest){
         const upload = await writeFile(path,buffer)
         // console.log(upload)
 
+        const cloudinaryResponse =await uploadOnCloudinary(path)
+        console.log(cloudinaryResponse!.url)
 
-        // upload.single(data)
-
-
-
-
-
-
-
-
-        // const byteData = await file.arrayBuffer();
-
-        // const data = req.json();
-        // console.log(data)
-            return NextResponse.json({
-                message:"success",
-                data:data
-            })
+        return NextResponse.json({
+            message:"success",
+            data:data,
+            cloud:cloudinaryResponse
+        })
     } catch (error:any) {
         return NextResponse.json(
             {

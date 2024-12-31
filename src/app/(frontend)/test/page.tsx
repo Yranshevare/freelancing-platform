@@ -17,7 +17,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ProfileForm from '@/components/profileForm'
-import upload from '@/helper/multer.js'
 
 export default function Page() {
     
@@ -36,9 +35,9 @@ export default function Page() {
             if(file){
                 const data = new FormData()
                 data.set('file',file)
-                console.log(data)
-                // const response  = await axios.post('/api/test',data)
-                // console.log(response,"from page.tsx")
+                // console.log(data)
+                const response  = await axios.post('/api/test',data)
+                console.log(response,"from page.tsx")
             }
         } catch (error:any) {
             console.error('Error:',error.message)

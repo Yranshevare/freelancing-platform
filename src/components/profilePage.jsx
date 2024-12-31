@@ -94,7 +94,7 @@ export default function ProfilePage({profile}) {
                             <div className='w-96 h-96 rounded-[50%] bg-center bg-cover'>
                                 {
                                      image.length > 0 ? (
-                                        <img src={image} alt="" className='w-96 h-96 rounded-[50%] bg-white' />
+                                        <img src={image} alt="" className='w-full h-full rounded-[50%] bg-cover' />
                                       ) : (
                                         <button className='w-96 h-96 rounded-[50%] bg-cardBackground'>
                                           imh
