@@ -44,7 +44,7 @@ export default function page() {
             }
 
             if(response.data.message === "login successful"){
-                console.log(response.data.message)
+                // console.log(response.data.message)
                 router.push('/profile')
             }
 
