@@ -11,7 +11,10 @@ export async function POST(req:NextRequest){
 
     try {
         const { name,bio,linkOne,linkTwo } = await req.json()
-        
+        // const data = await req.formData()
+        // console.log(name,bio,linkOne,linkTwo)
+
+         
         //getting the userid from the cookie
         const userId = await getDataFromToken(req)
         if(!userId){
@@ -52,9 +55,10 @@ export async function POST(req:NextRequest){
                 ].filter(link => link !== null) // Remove null values
             })
         
-            // console.log(newProfile)
+            console.log(newProfile)
 
             const savedProfile = await newProfile.save()
+            // console.log(savedProfile)
         
             return NextResponse.json({
                 message: "Profile saved successfully",
@@ -68,21 +72,21 @@ export async function POST(req:NextRequest){
         // console.log(name, bio, linkOne, linkTwo)
         // linkOne ? console.log("linkOne") : console.log("link not present")
         //create new profile
-        const newProfile = new Profile({
-            ownerId:userId,
-            name:name,
-            bio:bio,
-            links: [
-                linkOne || null,
-                linkTwo || null
-            ].filter(link => link !== null) // Remove null values
-        })
+        // const newProfile = new Profile({
+        //     ownerId:userId,
+        //     name:name,
+        //     bio:bio,
+        //     links: [
+        //         linkOne || null,
+        //         linkTwo || null
+        //     ].filter(link => link !== null) // Remove null values
+        // })
 
-        console.log(newProfile)
+        // console.log(newProfile)
 
-        return NextResponse.json({
-            message: "Profile saved successfully"
-        })
+        // return NextResponse.json({
+        //     message: "Profile saved successfully"
+        // })
 
     } catch (error) {
         

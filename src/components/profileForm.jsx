@@ -11,6 +11,8 @@ function ProfileForm({cancel,user}) {
     const [nameError,setNameError] = useState("")
     const [bioError,setBioError] = useState("")
     const [saveError,setSaveError] = useState("")
+    const [file,setFile] = useState("")
+    const [image,setImage] = useState("")
     // console.log(user)
     // console.log('from profile edit form')
 
@@ -21,12 +23,21 @@ function ProfileForm({cancel,user}) {
     //     setLinkOne(user.links[0] || "");
     //     setLinkTwo(user.links[1] || "");
     // }
+
+    // const handleFileChange = (event) => {
+    //     const selectedFile = event.target.files[0];
+    //     setFile(selectedFile); // Optionally save the file in state
+    //   };
+    let imageFile 
     useEffect(() => {
         if (user !== "create new user") {
             setName(user.name || "");
             setBio(user.bio || "");
             setLinkOne(user.links[0] || "");
             setLinkTwo(user.links[1] || "");
+            setImage(user.image || "") //url of img
+            imageFile = file
+            
         }
     }, [user]);
 
@@ -52,21 +63,45 @@ function ProfileForm({cancel,user}) {
         }
     }
 
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        setFile(selectedFile); // Optionally save the file in state\
+        console.log(file)
+      };
+
     async function submit(){
         // console.log(name,bio,linkOne,linkTwo)
+        setSaveError("")
         if(!validations()){
             return
         }
 
         // console.log("inside try of edit profile form")
         try {
+            if(file){
+                console.log(file)
+                const data = new FormData()
+                // console.log(data)
+
+                data.set('file',file)
+                // data.forEach((value, key) => {
+                //     console.log(key, value); // Logs the name and content of each field
+                // });
+
+                const response = await axios.post('/api/profile/saveProfileImage',data)
+                // console.log(response,"from img")
+                setFile("")
+                // console.log(file)
+            }
+            // console.log('reach to api req')
             const response = await axios.post('/api/profile/save',{
                 name:name, 
                 bio:bio, 
                 linkOne:linkOne, 
                 linkTwo:linkTwo
             })
-            // console.log(response)
+            
+            // console.log(response,"from without img")
             // console.log(cancel)
             cancel();
             
@@ -81,14 +116,27 @@ function ProfileForm({cancel,user}) {
     <div className='flex flex-col items-center justify-around h-[900px] rounded-xl my-8 bg-cardBackground w-1/2 '>
         <div className='w-[95%] border-b text-center h-[25%] flex  items-center justify-center my-2 pb-3'>
             <div className='w-[100%] flex flex-col items-center justify-center'>
-                <input type="file"  id='inputImage' className='hidden'/>
+                <input 
+                onChange={handleFileChange}
+                type="file"  
+                id='inputImage' 
+                className='hidden'/>
                
                 <div className='w-40 h-40 border rounded-[50%] flex items-center justify-center'>
                     <label 
                     htmlFor="inputImage" 
                     className='hover:cursor-pointer h-full w-full flex items-center justify-center rounded-[50%]'>
-                        <div className='w-[95%] h-[95%] bg-[rgba(255,255,255,0.2)] flex items-center justify-center rounded-[50%]'>
-                                    <p className='font-normal text-sm opacity-65'>set profile image</p>
+                        <div className='w-[95%] h-[95%] flex items-center justify-center rounded-[50%]'>
+                                    {/* <p className='font-normal text-sm opacity-65'>set profile image</p> */}
+                                    {
+                                        image.length>0?
+                                        <img className='w-full h-full rounded-md flex justify-center items-center' src={image} alt='Profile Pic'/>
+                                        :
+                                        <div className='w-full h-full rounded-[50%] bg-[rgba(255,255,255,0.2)] '>
+                                            <p className='font-normal text-sm opacity-65'>set profile image</p>
+                                        </div>
+                                        
+                                    }
                         </div>
                     </label>
                 </div>

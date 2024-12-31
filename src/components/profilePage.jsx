@@ -24,6 +24,7 @@ export default function ProfilePage({profile}) {
         setBio(profile.bio);
         setLinkOne(profile.links[0] || "");
         setLinkTwo(profile.links[1] || "");
+        setImage(profile.image || "")
       }
     }, [profile]);
 
