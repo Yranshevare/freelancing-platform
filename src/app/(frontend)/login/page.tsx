@@ -12,7 +12,9 @@ export default function page() {
     const [passwordError,setPasswordError] = useState("")
     const [password, setPassword] = useState("")
     const [submitError,setSubmitError] = useState("")
+    const [login,setLogin] = useState("login")
     const submit = async() => {
+        setLogin("loging in.... ")
 
         setIdError("")
         setPasswordError("")
@@ -47,12 +49,12 @@ export default function page() {
                 // console.log(response.data.message)
                 router.push('/profile')
             }
-
+               setLogin('login') 
             // console.log(response)
        } catch (error:any) {
             console.log(error.message)
             setSubmitError("something went wrong please try again")
-            
+            setLogin("login")
             return
  
        }
@@ -93,7 +95,7 @@ export default function page() {
                         <button 
                         className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)]'
                         onClick={submit}
-                        >login</button>
+                        >{login}</button>
                         <Link href="/signin" className='font-medium text-xs text-center mt-3 opacity-30 hover:opacity-80 duration-300'>create new account</Link>
                         <p className='text-xs text-red-700 font-normal h-2 pt-2 text-center'>{submitError}</p>
                     </div>

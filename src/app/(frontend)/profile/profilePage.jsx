@@ -1,6 +1,7 @@
 import React, { useCallback, useState,useEffect } from 'react'
 import Header from '@/components/header'
 import ProfileForm from '@/components/profileForm'
+import AddProjectForm from '@/components/addProjectForm'
 
 export default function ProfilePage({profile}) {
     const [username,setUsername] = useState("")
@@ -35,6 +36,12 @@ export default function ProfilePage({profile}) {
       setOpacity("hidden")
       setButClick(1)
     },[])
+    const openAddProject = useCallback(() => {
+      // console.log("openEditProfile")
+      setDisplay("flex")
+      setOpacity("hidden")
+      setButClick(2)
+    },[])
 
     //function to close forms
     const cancelBut = useCallback(() => {
@@ -45,22 +52,29 @@ export default function ProfilePage({profile}) {
 
   return (
     <>
-         <div className={`${display} w-full flex flex-col items-center bg-heroBlue justify-center pt-11`}>
-        <div className='w-full flex justify-end'>
-          <button 
-          onClick={cancelBut}
-          className='h-14 w-14 flex items-center justify-center mr-11 rounded-[50%] opacity-55 bg-red-500 text-white'>X</button>
+        <div className={`${display} w-full flex flex-col items-center bg-heroBlue justify-center pt-11`}>
+          <div className='w-full flex justify-end'>
+            <button 
+            onClick={cancelBut}
+            className='h-14 w-14 flex items-center justify-center mr-11 rounded-[50%] opacity-55 bg-red-500 text-white'>X</button>
+             
+          </div>
+          {
+              butClick ===1 && <ProfileForm 
+                                  Name={setUsername}
+                                  Bio = {setBio}
+                                  LinkOne={setLinkOne}
+                                  LinkTwo={setLinkTwo}
+                                  Image={setImage}
+                                  cancel={cancelBut} 
+                                  user={ profile  } />
+          }
+          {
+            butClick === 2&& <AddProjectForm/>
+          }
+                
         </div>
-        <ProfileForm 
-        Name={setUsername}
-        Bio = {setBio}
-        LinkOne={setLinkOne}
-        LinkTwo={setLinkTwo}
-        I mage={setImage}
-        cancel={cancelBut} 
-        user={ profile  } />
-      </div>
-       <div className={` flex-col items-center absolute top-0 w-full justify-center bg-heroBlue ${opacity}`}>
+        <div className={` flex-col items-center absolute top-0 w-full justify-center bg-heroBlue ${opacity}`}>
             {/* div for hero section */}
             <div className= 'w-full h-[70vh]'>
                  <Header user  = {profile}/>
@@ -120,7 +134,7 @@ export default function ProfilePage({profile}) {
                 <div className='flex justify-between w-[90%]'>
                     <h2 className='p-2 font-black text-2xl text-gray-600'>projects</h2>
                     <button 
-                    onClick={() => setButClick(2)}
+                    onClick={openAddProject}
                     className='p-2'>Add project</button>
                 </div>
                 <div>

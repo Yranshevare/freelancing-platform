@@ -9,21 +9,29 @@ const ProjectSchema = new Schema({
         type: String,
         required: true
     },
-    skills: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Skill'
-    }],
+    skills: {
+        type: String,
+        required: true
+    },
     ownerId:{
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    status: {
+    completionStatus: {
         type: String,
         enum: ['pending', 'ongoing', 'completed'],
         default: 'pending'
     },
+    haringStatus:{
+        type: String,
+        enum: ["haring","not_haring"],
+        default: 'not_haring'
+    },
+    image:{
+        type: String,   //url
+    }
     
 },{timeseries:true});
 
-const project =  mongoose.models.Project || mongoose.model('Project', ProjectSchema);
-export default project
+const Project =  mongoose.models.Project || mongoose.model('Project', ProjectSchema);
+export default Project

@@ -14,6 +14,7 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
     const [file,setFile] = useState("")
     const [image,setImage] = useState("")
     const [imgAlt,setImageAlt] = useState("set profile image")
+    const [save,setSave] = useState("save")
     // console.log(Name,Bio,LinkOne,LinkTwo,Image)
     // console.log(user)
     // console.log('from profile edit form')
@@ -69,12 +70,15 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
         const selectedFile = event.target.files[0];
         setFile(selectedFile); // Optionally save the file in state\
         // console.log(selectedFile)
-        setImage("")
+        setImage("")    
         setImageAlt("new file uploaded")
       };
 
+      
+
     async function submit(){
         // console.log(name,bio,linkOne,linkTwo)
+        setSave("saving...")
         setSaveError("")
         if(!validations()){
             return
@@ -88,7 +92,7 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
                 const data = new FormData()
                 // console.log(data)
 
-                // data.set('file',file)
+                data.set('file',file)
                 // data.forEach((value, key) => {
                 //     console.log(key, value); // Logs the name and content of each field
                 // });
@@ -107,21 +111,25 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
                 linkTwo:linkTwo
             })
             
-            // console.log(response,"from without img")
             // console.log(response.data.profile.name)
             Name(response.data.profile.name)
             Bio(response.data.profile.bio)
             LinkOne(response.data.profile.links[0] || "")
             LinkTwo(response.data.profile.links[1] || "")
             Image(response.data.profile.image || "")
-            setImage(response.data.profile.image|| '')
+            setImage(response.data.profile.image  || '')
+            // console.log(response.data.profile.image) 
+            // console.log(image == response.data.profile.image)
+            // console.log(response,"from without img")    
             // console.log(cancel)  
             cancel();
+            setSave("save")
             
 
         } catch (error) {
             // console.log(error.message)
             setSaveError("something went wrong please try again")
+            setSave("save")
         }
 
     }
@@ -143,7 +151,7 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
                                     {/* <p className='font-normal text-sm opacity-65'>set profile image</p> */}
                                     {
                                         image.length>0?
-                                        <img className='w-full  bg-cover overflow-hidden rounded-[50%] flex justify-center items-center' src={image} alt='Profile Pic'/>
+                                        <img className='w-full h-full bg-cover overflow-hidden rounded-[50%] flex justify-center items-center' src={image} alt='Profile Pic'/>
                                         :
                                         <div className='w-full h-full flex items-center justify-center rounded-[50%] bg-[rgba(255,255,255,0.2)] '>
                                             <p className='font-normal text-sm opacity-65'>{imgAlt}</p>
@@ -200,7 +208,7 @@ function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
         <div className=' flex justify-center flex-col my-2 w-[95%]'>
             <button 
             onClick={submit}
-            className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] '>save</button>
+            className='border p-2 rounded-xl hover:bg-[rgba(255,255,255,0.2)] '>{save}</button>
             <p className='w-full text-xs text-red-700 font-normal h-2 text-center pt-3'>{saveError}</p>
         </div>
     </div>

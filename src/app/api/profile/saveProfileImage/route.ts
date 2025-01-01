@@ -39,7 +39,7 @@ export async function POST (req : NextRequest){
 
         // const path = join('@','/','public','/','temp',file.name)
         const path = `./public/temp/${file.name}`
-        // // console.log(path)
+        // console.log(buffer)
         await writeFile(path,buffer)
         // console.log(upload)
 
