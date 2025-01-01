@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-function ProfileForm({cancel,user}) {
+function ProfileForm({cancel,user,Name,Bio,LinkOne,LinkTwo,Image}) {
     const [name,setName] = useState( "") 
     const [bio,setBio] = useState("")
     const [linkOne,setLinkOne] = useState("")
@@ -13,6 +13,8 @@ function ProfileForm({cancel,user}) {
     const [saveError,setSaveError] = useState("")
     const [file,setFile] = useState("")
     const [image,setImage] = useState("")
+    const [imgAlt,setImageAlt] = useState("set profile image")
+    // console.log(Name,Bio,LinkOne,LinkTwo,Image)
     // console.log(user)
     // console.log('from profile edit form')
 
@@ -66,7 +68,9 @@ function ProfileForm({cancel,user}) {
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile); // Optionally save the file in state\
-        console.log(file)
+        // console.log(selectedFile)
+        setImage("")
+        setImageAlt("new file uploaded")
       };
 
     async function submit(){
@@ -79,11 +83,12 @@ function ProfileForm({cancel,user}) {
         // console.log("inside try of edit profile form")
         try {
             if(file){
-                console.log(file)
+                // console.log(file)
+                // setImage(file)
                 const data = new FormData()
                 // console.log(data)
 
-                data.set('file',file)
+                // data.set('file',file)
                 // data.forEach((value, key) => {
                 //     console.log(key, value); // Logs the name and content of each field
                 // });
@@ -91,6 +96,7 @@ function ProfileForm({cancel,user}) {
                 const response = await axios.post('/api/profile/saveProfileImage',data)
                 // console.log(response,"from img")
                 setFile("")
+                
                 // console.log(file)
             }
             // console.log('reach to api req')
@@ -102,7 +108,14 @@ function ProfileForm({cancel,user}) {
             })
             
             // console.log(response,"from without img")
-            // console.log(cancel)
+            // console.log(response.data.profile.name)
+            Name(response.data.profile.name)
+            Bio(response.data.profile.bio)
+            LinkOne(response.data.profile.links[0] || "")
+            LinkTwo(response.data.profile.links[1] || "")
+            Image(response.data.profile.image || "")
+            setImage(response.data.profile.image|| '')
+            // console.log(cancel)  
             cancel();
             
 
@@ -130,10 +143,10 @@ function ProfileForm({cancel,user}) {
                                     {/* <p className='font-normal text-sm opacity-65'>set profile image</p> */}
                                     {
                                         image.length>0?
-                                        <img className='w-full h-full overflow-hidden rounded-[50%] flex justify-center items-center' src={image} alt='Profile Pic'/>
+                                        <img className='w-full  bg-cover overflow-hidden rounded-[50%] flex justify-center items-center' src={image} alt='Profile Pic'/>
                                         :
                                         <div className='w-full h-full flex items-center justify-center rounded-[50%] bg-[rgba(255,255,255,0.2)] '>
-                                            <p className='font-normal text-sm opacity-65'>set profile image</p>
+                                            <p className='font-normal text-sm opacity-65'>{imgAlt}</p>
                                         </div>
                                         
                                     }

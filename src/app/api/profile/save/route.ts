@@ -55,7 +55,7 @@ export async function POST(req:NextRequest){
                 ].filter(link => link !== null) // Remove null values
             })
         
-            console.log(newProfile)
+            // console.log(newProfile)
 
             const savedProfile = await newProfile.save()
             // console.log(savedProfile)
@@ -88,7 +88,12 @@ export async function POST(req:NextRequest){
         //     message: "Profile saved successfully"
         // })
 
-    } catch (error) {
+    } catch (error:any) {
+        return NextResponse.json({
+            message: "An error occurred while saving the profile",
+            error: error.message,
+            status: 500
+        })
         
     }
 

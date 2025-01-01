@@ -13,6 +13,28 @@
     --foreground: #ededed;
   }
 }
+@layer components {
+  /* Custom CSS for smaller than sm screens */
+  @media (max-width: 639px) {
+    .profile-image {
+      width: 50%;
+      height: 50%;
+    }
+    .hero-section{
+      display:  flex;
+      flex-direction: column-reverse;
+      margin-top: 20px;
+    }
+    .hero-info{
+      width: 90%;
+      margin-top: 20px;
+    }
+    .hero-img-cont{
+      width: 90%;
+      height: 90%;
+    }
+  }
+}
 
 body {
   color: var(--foreground);

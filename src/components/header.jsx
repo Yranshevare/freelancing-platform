@@ -25,6 +25,7 @@ export default function Header({user}) {
   const logout = useCallback(async () => {
     // console.log("User logged out")
     const response = await axios.get('/api/user/logout')
+    // confirm("User logged out successfully")
     router.push('/login')
 
   },[])

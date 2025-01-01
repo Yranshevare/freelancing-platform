@@ -51,14 +51,21 @@ export default function ProfilePage({profile}) {
           onClick={cancelBut}
           className='h-14 w-14 flex items-center justify-center mr-11 rounded-[50%] opacity-55 bg-red-500 text-white'>X</button>
         </div>
-        <ProfileForm cancel={cancelBut} user={ profile  } />
+        <ProfileForm 
+        Name={setUsername}
+        Bio = {setBio}
+        LinkOne={setLinkOne}
+        LinkTwo={setLinkTwo}
+        I mage={setImage}
+        cancel={cancelBut} 
+        user={ profile  } />
       </div>
        <div className={` flex-col items-center absolute top-0 w-full justify-center bg-heroBlue ${opacity}`}>
             {/* div for hero section */}
             <div className= 'w-full h-[70vh]'>
                  <Header user  = {profile}/>
-                 <div className='w-full h-[500px] flex items-center justify-center  mt-16'>
-                    <div className='w-1/2 flex flex-col  justify-around  pl-4'>
+                 <div className='hero-section w-full h-[500px] flex items-center justify-center  sm:mt-16'>
+                    <div className='hero-info sm:w-1/2 flex flex-col  justify-around  sm:pl-4'>
                         <h2 className='text-2xl h-[50px] font-bold border-b border-b-gray-500 pb-3'>{username}</h2>
                         <p className='font-normal text-base py-1 text-gray-400'>{bio}</p>
                         
@@ -87,16 +94,16 @@ export default function ProfilePage({profile}) {
                         </div>
 
                     </div>
-                    <div className='w-1/2 flex items-center justify-center'>
-                        <div className='w-[400px] h-[400px] rounded-[50%]  border  border-gray-500 flex items-center justify-center'>
+                    <div className='hero-img-cont sm:w-1/2 sm:h-1/2 flex items-center justify-center'>
+                        <div className=' profile-image sm:w-[400px] sm:h-[400px] rounded-[50%]  border  border-gray-500 flex items-center justify-center'>
 
                             {/* div for image */}
-                            <div className='w-96 h-96 rounded-[50%] bg-center bg-cover'>
+                            <div className='w-full h-full rounded-[50%] bg-center bg-cover'>
                                 {
                                      image.length > 0 ? (
                                         <img src={image} alt="" className='w-full h-full rounded-[50%] bg-cover' />
                                       ) : (
-                                        <button className='w-96 h-96 rounded-[50%] bg-cardBackground'>
+                                        <button className='w-full h-full rounded-[50%] bg-cardBackground'>
                                           imh
                                         </button>
                                       )
