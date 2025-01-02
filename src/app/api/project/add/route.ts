@@ -9,7 +9,7 @@ connectDb()
 export async function POST(req:NextRequest){
     try {
         let completion,haring
-        const {title,description,skills,completionStatus,hiringState} = await req.json()
+        const {title,description,skills,completionStatus,hiringState,image} = await req.json()
 
         const userId = await getDataFromToken(req)
         if(!userId){
@@ -42,7 +42,7 @@ export async function POST(req:NextRequest){
         if(hiringState === 2){
             haring = 'haring'
         }
-        console.log(title,description,skills,completion,haring  )
+        console.log(title,description,skills,completion,haring,image  )
         //creating new project
         const newProject = new Project({
             title:title,
@@ -50,7 +50,8 @@ export async function POST(req:NextRequest){
             ownerId:userId,
             skills:skills,
             completionStatus:completion,
-            haringStatus:haring
+            haringStatus:haring,
+            image:image
         })
         // console.log(newProject,"new project")
 

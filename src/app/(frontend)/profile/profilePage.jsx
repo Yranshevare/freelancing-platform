@@ -1,6 +1,7 @@
 import React, { useCallback, useState,useEffect } from 'react'
 import Header from '@/components/header'
 import ProfileForm from '@/components/profileForm'
+import ProjectCard from '@/components/projectCard'
 import AddProjectForm from '@/components/addProjectForm'
 
 export default function ProfilePage({profile}) {
@@ -137,7 +138,14 @@ export default function ProfilePage({profile}) {
                     onClick={openAddProject}
                     className='p-2'>Add project</button>
                 </div>
-                <div>
+                <div className=' flex flex-wrap justify-center w-[90%] pt-4'>
+                                {/* <ProjectCard projectId={123456  }/> */}
+                    {
+                        profile.project.map(project => (
+                            <ProjectCard key={project} projectId={project}/>
+                        ))
+                    }
+                  
                     
                 </div>
              </div>

@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
      <div className=" bg-[url('/loading_page_img.jpg')] w-screen h-screen bg-cover bg-center">
-      <Header/>
+      {/* <Header/> */}
       <div className="flex flex-col items-center justify-center mt-28">
         <div></div>
         <button 

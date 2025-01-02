@@ -5,6 +5,7 @@ import axios from 'axios'
 export default function AddProjectForm() {
     const [file,setFile] = useState("")
     const [fileError,setFileError] = useState("")
+    const [image,setImage] = useState('/loading_page_img.jpg')
     const [title, setTitle] = useState("");
     const [titleError,setTitleError] = useState("")
     const [description, setDescription] = useState("");
@@ -20,9 +21,13 @@ export default function AddProjectForm() {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
     },[])
-    // useEffect(()=>{
-    //   console.log(file)
-    // },[file])
+    useEffect(()=>{
+      async function setImageTOLocalServer(){
+        console.log(file)
+        
+      }
+      setImageTOLocalServer()
+    },[file])
     
     function validation(){
       // console.log("valid function")
@@ -58,21 +63,34 @@ export default function AddProjectForm() {
         setSave("saving...")
         setSaveError("")
 
-        // if(!validation()){
-        //   setSaveError("All fields are required")   
-        //   setSave("save")
-        //   return
-        // }
+        if(!validation()){
+          setSaveError("All fields are required")   
+          setSave("save")
+          return
+        }
         setFileError("")
         try {
-            const response = await axios.post('/api/project/add',{
-              title:title, 
-              description:description, 
-              skills:skills,
-              completionStatus:completionStatus, 
-              hiringState:haringState,
-            })
+          let imgUrl
+          if(file){
+            const data = new FormData()
+            data.set('file',file)
+            const response = await axios.post('/api/project/addImageToLocalServer',data)
             console.log(response)
+            // setImage(response.data.url)
+            imgUrl = response.data.data.url
+            console.log(imgUrl)
+  
+          }
+
+          const response = await axios.post('/api/project/add',{
+            title:title, 
+            description:description, 
+            skills:skills,
+            completionStatus:completionStatus, 
+            hiringState:haringState,
+            image:imgUrl,
+          })
+          console.log(response)
           setSave("saved successfully")
         } catch (error) {
           setSaveError("something went wrong please try again")
@@ -91,9 +109,15 @@ export default function AddProjectForm() {
                 <label 
                 className='h-[90%] w-[90%] bg-cardBackground rounded cursor-pointer'
                 htmlFor="inputImage">
-                    <div >
-
-                    </div>
+                    {
+                      image.length > 0? (
+                        <img src={image} alt="" className='w-full h-full  bg-cover' />
+                      ) : (
+                        <button className='w-full h-full rounded-[50%] bg-cardBackground'>
+                          upload image
+                        </button>
+                      )
+                    }
                 </label>
                 <p className='form-input-error'>{fileError}</p>
             </div>

@@ -53,14 +53,16 @@
 
 
 
-import AddProjectFrom from '@/components/addProjectForm'
+import ProjectCard from '@/components/projectCard'
 
 import React from 'react'
 
 export default function page() {
   return (
     <>
-      <AddProjectFrom/>
+      <div className=' w-[80%] flex justify-center flex-wrap bg-white'>
+      <ProjectCard projectId={123456789}/>
+      </div>
     </>
   )
 
