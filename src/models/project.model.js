@@ -29,6 +29,9 @@ const ProjectSchema = new Schema({
     },
     image:{
         type: String,   //url
+    },
+    link:{
+        type: String,   //url
     }
     
 },{timeseries:true});

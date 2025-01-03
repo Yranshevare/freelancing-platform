@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function AddProjectForm() {
+export default function AddProjectForm( {cancel}) {
     const [file,setFile] = useState("")
     const [fileError,setFileError] = useState("")
     const [image,setImage] = useState('/loading_page_img.jpg')
@@ -90,7 +90,8 @@ export default function AddProjectForm() {
             hiringState:haringState,
             image:imgUrl,
           })
-          console.log(response)
+          // console.log(response)
+          cancel()
           setSave("saved successfully")
         } catch (error) {
           setSaveError("something went wrong please try again")

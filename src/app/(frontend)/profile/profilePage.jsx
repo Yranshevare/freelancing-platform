@@ -71,7 +71,7 @@ export default function ProfilePage({profile}) {
                                   user={ profile  } />
           }
           {
-            butClick === 2&& <AddProjectForm/>
+            butClick === 2&& <AddProjectForm cancel = {cancelBut}/>
           }
                 
         </div>
