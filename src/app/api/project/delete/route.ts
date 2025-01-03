@@ -2,6 +2,7 @@ import { NextResponse,NextRequest } from "next/server";
 import Project from "@/models/project.model";
 import { getDataFromToken } from "@/helper/getUserIdFromToken";
 import Profile from "@/models/profile.model";
+import {deleteCloudinaryImage} from '@/helper/deleteImgOnCloudinary'
 
 export async function POST(req: NextRequest) {
     /*
@@ -14,6 +15,7 @@ export async function POST(req: NextRequest) {
         septate out the project array from profile
         filter the profile.project array for given projectId i.e remove the projectId from the profile.project array
         update the profile
+        delete image from cloudinary 
         delete the project from Project model
     */
 
@@ -27,9 +29,9 @@ export async function POST(req: NextRequest) {
                     status: 404
                 })
             }
-            console.log(project.ownerId.toString())
+
             const userId =await getDataFromToken(req)
-            console.log(userId)
+
             if (project.ownerId.toString() !== userId) {
                 return NextResponse.json({
                   message: "Unauthorized to delete this project",
@@ -51,6 +53,17 @@ export async function POST(req: NextRequest) {
             profile.project = profile.project.filter((p:any) => p._id.toString()!== projectId)
             await profile.save()
 
+            if(project.image){
+                try {
+                    console.log(project.image)
+                    await deleteCloudinaryImage(project.image)
+                } catch (error:any) {
+                    return NextResponse.json({
+                        message: "Unable to delete the image from cloudinary"
+                    })
+                }
+            }
+            // console.log(response)
             await Project.findByIdAndDelete(projectId)
 
             return NextResponse.json({
